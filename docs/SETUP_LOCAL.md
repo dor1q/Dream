@@ -1,94 +1,121 @@
-# Локальный запуск
+# Local Setup
 
-Эта инструкция описывает базовую подготовку dev-окружения. Она не включает игровые файлы, приватные ключи, проприетарные ассеты или обход сторонних сервисов.
+This document covers the local setup for backend and game server development.
 
-## Требования
+It does not cover proprietary game files, private keys, or third-party service bypasses.
+
+## Requirements
 
 - Windows 10/11
 - Git
-- Node.js и npm
+- Node.js and npm
 - MongoDB Community Server
-- Visual Studio 2022 или Visual Studio 2022 Build Tools
-- C++ Desktop Development workload для Visual Studio
+- Visual Studio 2022 or Visual Studio 2022 Build Tools
+- Visual Studio workload: `Desktop development with C++`
 
 ## Backend
 
-Перейти в backend:
+Go to the backend directory:
 
 ```powershell
 cd D:\ProjectDream\LawinServerV2-main
 ```
 
-Установить зависимости:
+Install dependencies:
 
 ```powershell
 npm install
 ```
 
-Проверить конфиг:
+Check syntax:
 
 ```powershell
-notepad .\Config\config.json
+npm run check
 ```
 
-Минимально важные поля:
-
-- `mongodb.database`
-- `matchmakerIP`
-- `gameServerIP`
-- `discord.bot_token`, если нужен Discord bot
-
-Запустить backend:
+Start backend:
 
 ```powershell
-node index.js
+npm start
 ```
 
-По умолчанию backend слушает порт `8080`.
+Default ports:
+
+- Backend HTTP API: `8080`
+- XMPP / matchmaker service: `80`
 
 ## MongoDB
 
-Backend ожидает локальный MongoDB:
+The default backend database URI is:
 
 ```text
 mongodb://127.0.0.1/lawindb
 ```
 
-Если MongoDB установлен как сервис, проверьте его статус:
+Check the Windows service:
 
 ```powershell
 Get-Service MongoDB
 ```
 
+If MongoDB runs as a service, `mongod` does not need to be available in `PATH`.
+
+## Environment
+
+Example file:
+
+```text
+LawinServerV2-main/.env.example
+```
+
+Supported values:
+
+```env
+PORT=8080
+MONGODB_URI=mongodb://127.0.0.1/lawindb
+DISCORD_BOT_TOKEN=
+```
+
+If `DISCORD_BOT_TOKEN` is empty, the backend starts without the Discord bot.
+
 ## Game Server
 
-1. Открыть решение:
+Open the Visual Studio solution:
 
 ```text
 D:\ProjectDream\Project-Reboot-3.0-master\Project Reboot 3.0.sln
 ```
 
-2. Выбрать конфигурацию `Release|x64` или нужную dev-конфигурацию.
-3. Собрать проект через Visual Studio 2022.
+Recommended first build:
 
-Если `msbuild` не находится из обычной консоли, откройте `Developer PowerShell for VS 2022`.
+- Configuration: `Release`
+- Platform: `x64`
 
-## Launcher
+If `msbuild` is not available in normal PowerShell, open:
 
-Папка `launcher/` пока содержит каркас. Перед началом реализации нужно выбрать стек:
+```text
+Developer PowerShell for VS 2022
+```
 
-- Tauri: меньше размер, Rust backend, web UI.
-- Electron: быстрее MVP, больше размер.
-- .NET/WPF: нативно для Windows, удобно для desktop launcher.
+Then verify:
 
-Рекомендуемый MVP описан в [ROADMAP.md](ROADMAP.md).
+```powershell
+msbuild -version
+```
 
-## Проверки
+## Quick Health Check
 
-Backend можно быстро проверить статически:
+Backend:
 
 ```powershell
 cd D:\ProjectDream\LawinServerV2-main
-Get-ChildItem -Recurse -Filter *.js | ForEach-Object { node --check $_.FullName }
-node -e "JSON.parse(require('fs').readFileSync('package-lock.json','utf8')); console.log('package-lock OK')"
+npm run check
+npm start
+```
+
+Repository:
+
+```powershell
+cd D:\ProjectDream
+git status --short --branch
 ```

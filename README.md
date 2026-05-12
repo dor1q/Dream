@@ -1,86 +1,66 @@
 # Dream
 
-Dream - рабочий репозиторий проекта по восстановлению инфраструктуры для старых версий Fortnite: backend, launcher и game server.
+Dream is a backend and game server workspace for old Fortnite server-side infrastructure experiments.
 
-Проект сейчас находится на стадии первичной сборки кодовой базы. В репозитории уже лежат backend-часть, C++ game server workspace и отдельная папка под будущий launcher.
+This repository currently contains two active components:
 
-> Важно: репозиторий не содержит игровых файлов Fortnite, проприетарных ассетов Epic Games или ключей доступа. Используйте проект только в легальной среде, с собственными файлами и без нарушения лицензий, правил сервисов и прав правообладателей.
-
-## Что внутри
-
-| Путь | Назначение | Текущий статус |
+| Path | Purpose | Status |
 | --- | --- | --- |
-| `LawinServerV2-main/` | Node.js backend: аккаунты, OAuth-like endpoints, профили, магазин, друзья, XMPP | Импортировано, нужна установка зависимостей и MongoDB |
-| `Project-Reboot-3.0-master/` | C++ game server workspace / DLL-проект для Visual Studio | Импортировано, нужна сборка через Visual Studio 2022 |
-| `launcher/` | Будущий лаунчер: вход, выбор билда, конфиг, запуск клиента | Создан каркас |
-| `docs/` | Документация по архитектуре, локальному запуску и плану работ | Добавлено оформление |
+| `LawinServerV2-main/` | Node.js backend: auth endpoints, profiles, friends, store, XMPP, matchmaking endpoints | Runs locally with MongoDB |
+| `Project-Reboot-3.0-master/` | C++ game server workspace / Visual Studio DLL project | Imported, build verification pending |
+| `docs/` | Architecture, setup, and roadmap documentation | Active |
 
-## Быстрый старт для разработки
+Important boundaries:
 
-1. Установить Git, Node.js, npm, MongoDB и Visual Studio 2022 Build Tools.
-2. Установить зависимости backend:
+- No Fortnite game files are stored in this repository.
+- No Epic Games assets are stored in this repository.
+- No private keys, Discord tokens, passwords, or real user data should be committed.
+- Third-party code keeps its original license and authorship.
+
+## Local Backend Start
 
 ```powershell
 cd D:\ProjectDream\LawinServerV2-main
 npm install
+npm start
 ```
 
-3. Запустить MongoDB локально.
-4. Настроить `LawinServerV2-main/Config/config.json`.
-5. Запустить backend:
+Expected output:
 
-```powershell
-cd D:\ProjectDream\LawinServerV2-main
-node index.js
+```text
+BACKEND: App started listening on port 8080
+BOT: Discord bot disabled because DISCORD_BOT_TOKEN is not set.
+XMPP: XMPP and Matchmaker started listening on port 80
+BACKEND: App successfully connected to MongoDB!
 ```
 
-6. Открыть `Project-Reboot-3.0-master/Project Reboot 3.0.sln` в Visual Studio 2022 и собрать нужную конфигурацию.
+## Game Server Build
 
-Подробнее: [docs/SETUP_LOCAL.md](docs/SETUP_LOCAL.md)
+Open this solution in Visual Studio 2022:
 
-## Архитектура
+```text
+D:\ProjectDream\Project-Reboot-3.0-master\Project Reboot 3.0.sln
+```
 
-Высокоуровневая схема:
+Use `Release | x64` first unless a specific debug configuration is needed.
+
+## Architecture
 
 ```mermaid
 flowchart LR
-    Launcher["Launcher"] --> Backend["Backend API"]
-    Launcher --> Client["Game client"]
+    Client["Game client"] --> Backend["Backend API"]
+    Client --> GameServer["Game server"]
     Backend --> MongoDB["MongoDB"]
     Backend --> XMPP["XMPP service"]
     Backend --> Matchmaker["Matchmaker"]
-    Matchmaker --> GameServer["Game server"]
-    Client --> Backend
-    Client --> GameServer
+    Matchmaker --> GameServer
 ```
 
-Подробности: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+## Documentation
 
-## План работ
-
-Ближайший фокус:
-
-1. Привести backend к стабильному локальному запуску.
-2. Описать и зафиксировать конфиги окружения.
-3. Спроектировать MVP лаунчера.
-4. Проверить сборку C++ проекта на Windows.
-5. Связать launcher -> backend -> game server в понятный dev-flow.
-
-Полный список: [docs/ROADMAP.md](docs/ROADMAP.md)
-
-## Правила репозитория
-
-- Не коммитить `.env`, токены Discord, приватные ключи, пароли и реальные пользовательские данные.
-- Не коммитить игровые файлы, ассеты, билды клиента и другие проприетарные материалы.
-- Не коммитить `node_modules/`, build output, IDE cache и временные файлы.
-- Сторонние директории сохраняют свои лицензии и авторство.
-
-## Документы
-
-- [docs/SETUP_LOCAL.md](docs/SETUP_LOCAL.md) - локальная подготовка окружения.
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - схема компонентов.
-- [docs/ROADMAP.md](docs/ROADMAP.md) - план разработки.
-- [launcher/README.md](launcher/README.md) - заметки по будущему лаунчеру.
-- [NOTICE.md](NOTICE.md) - заметка о стороннем коде и лицензиях.
-- [CONTRIBUTING.md](CONTRIBUTING.md) - правила разработки.
-- [SECURITY.md](SECURITY.md) - как обращаться с секретами и уязвимостями.
+- [docs/SETUP_LOCAL.md](docs/SETUP_LOCAL.md) - local environment setup.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - component overview.
+- [docs/ROADMAP.md](docs/ROADMAP.md) - active development plan.
+- [CONTRIBUTING.md](CONTRIBUTING.md) - contribution rules.
+- [SECURITY.md](SECURITY.md) - secret and vulnerability handling.
+- [NOTICE.md](NOTICE.md) - third-party code notice.

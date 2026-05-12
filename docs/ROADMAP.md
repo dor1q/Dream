@@ -1,53 +1,47 @@
 # Roadmap
 
-## Этап 0. Репозиторий
+## Stage 0. Repository
 
-- [x] Создать git-репозиторий.
-- [x] Привязать remote `dor1q/Dream`.
-- [x] Добавить папку `launcher/`.
-- [x] Добавить базовую документацию.
+- [x] Create git repository.
+- [x] Attach remote `dor1q/Dream`.
+- [x] Import backend.
+- [x] Import game server workspace.
+- [x] Add baseline documentation.
+- [x] Define repository scope as backend and game server only.
 
-## Этап 1. Backend baseline
+## Stage 1. Backend Baseline
 
-- [ ] Установить npm-зависимости.
-- [ ] Поднять MongoDB локально.
-- [ ] Добавить `.env.example`.
-- [ ] Вынести секреты из JSON-конфига в env-переменные.
-- [ ] Добавить npm scripts: `start`, `dev`, `check`.
-- [ ] Проверить запуск backend без Discord bot token.
-- [ ] Разделить обязательные и опциональные сервисы.
+- [x] Install npm dependencies.
+- [x] Confirm MongoDB local service.
+- [x] Add `.env.example`.
+- [x] Add `npm start`.
+- [x] Add `npm run check`.
+- [x] Allow backend startup without Discord bot token.
+- [x] Verify local backend startup.
+- [ ] Move more machine-specific config values to environment variables.
+- [ ] Add a small health endpoint.
+- [ ] Document required auth/account creation flow.
 
-## Этап 2. Game server baseline
+## Stage 2. Game Server Baseline
 
-- [ ] Проверить сборку в Visual Studio 2022.
-- [ ] Зафиксировать рабочую конфигурацию сборки.
-- [ ] Описать required runtime files.
-- [ ] Проверить known issue в `anticheat.h`.
-- [ ] Добавить короткую инструкцию по debugging.
+- [ ] Verify build in Visual Studio 2022.
+- [ ] Record working build configuration.
+- [ ] Document required runtime files.
+- [ ] Check known issue in `anticheat.h`.
+- [ ] Add short debugging instructions.
 
-## Этап 3. Launcher MVP
+## Stage 3. Backend and Game Server Integration
 
-- [ ] Выбрать стек launcher.
-- [ ] Сделать окно входа.
-- [ ] Добавить настройки backend URL.
-- [ ] Добавить список доступных билдов.
-- [ ] Добавить локальный manifest формата `builds.json`.
-- [ ] Добавить запуск выбранного клиента.
-- [ ] Добавить экран статуса backend/game server.
+- [ ] Confirm backend matchmaker response values.
+- [ ] Confirm `matchmakerIP` and `gameServerIP` defaults.
+- [ ] Document expected startup order.
+- [ ] Document ports and firewall requirements.
+- [ ] Add local smoke-test checklist.
 
-## Этап 4. Интеграция
+## Stage 4. Hardening
 
-- [ ] Сценарий `login -> profile -> launch`.
-- [ ] Проверка токена launcher-side.
-- [ ] Получение endpoint-ов от backend.
-- [ ] Логи запуска клиента.
-- [ ] UI для ошибок подключения.
-
-## Этап 5. Полировка
-
-- [ ] Нормальная структура monorepo.
-- [ ] CI для backend lint/check.
-- [ ] CI для C++ сборки, если будет доступен toolchain.
-- [ ] Release notes.
-- [ ] Версионирование launcher.
-- [ ] Документация для админа сервера.
+- [ ] Review npm audit output without breaking compatibility.
+- [ ] Split required and optional backend services.
+- [ ] Avoid committing runtime token/session files.
+- [ ] Add CI for backend syntax checks.
+- [ ] Add CI for C++ build if toolchain is available.

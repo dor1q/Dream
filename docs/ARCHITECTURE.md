@@ -1,85 +1,79 @@
-# Архитектура Dream
+# Architecture
 
-Dream состоит из трех основных частей: backend, launcher и game server.
+Dream has two components:
 
-## Компоненты
+- Backend
+- Game server
 
-### Backend
+## Backend
 
-Путь: `LawinServerV2-main/`
+Path: `LawinServerV2-main/`
 
-Зона ответственности:
+Responsibilities:
 
-- аккаунты и авторизация;
-- профили игроков;
-- друзья и социальные endpoints;
-- магазин и catalog responses;
+- account and auth endpoints;
+- player profiles;
+- friends and social endpoints;
+- store and catalog responses;
+- cloud storage endpoints;
 - XMPP;
 - matchmaking endpoints;
-- конфигурация адресов matchmaker и game server.
+- configuration for matchmaker and game server addresses.
 
-Текущий backend написан на Node.js и использует MongoDB.
+The backend is a Node.js application and uses MongoDB.
 
-### Launcher
+## Game Server
 
-Путь: `launcher/`
+Path: `Project-Reboot-3.0-master/`
 
-Планируемая зона ответственности:
+Responsibilities:
 
-- авторизация игрока через backend;
-- хранение локальных настроек;
-- выбор доступного игрового билда;
-- проверка файлов;
-- запуск клиента с нужной конфигурацией;
-- отображение статуса backend и game server.
+- match server logic;
+- game phases;
+- inventory;
+- loot;
+- storm;
+- bots;
+- gameplay systems tied to supported old client versions.
 
-### Game Server
+The game server workspace is a C++ Visual Studio project.
 
-Путь: `Project-Reboot-3.0-master/`
-
-Зона ответственности:
-
-- серверная логика матча;
-- игровые фазы;
-- инвентарь, loot, storm, bots и другие игровые системы;
-- интеграция с выбранной старой версией клиента.
-
-Проект является C++ workspace для Visual Studio.
-
-## Поток запуска
+## Runtime Flow
 
 ```mermaid
 sequenceDiagram
-    participant Player as Игрок
-    participant Launcher as Launcher
+    participant Client as Game Client
     participant Backend as Backend API
     participant DB as MongoDB
+    participant Matchmaker as Matchmaker
     participant GameServer as Game Server
-    participant Client as Game Client
 
-    Player->>Launcher: Вход и выбор билда
-    Launcher->>Backend: Проверка аккаунта и статуса
-    Backend->>DB: Чтение профиля
-    DB-->>Backend: Данные профиля
-    Backend-->>Launcher: Токены, профиль, endpoint-ы
-    Launcher->>Client: Запуск клиента
-    Client->>Backend: Авторизация и сервисные запросы
-    Client->>GameServer: Подключение к матчу
+    Client->>Backend: Auth and service requests
+    Backend->>DB: Read/write account and profile data
+    DB-->>Backend: Account and profile data
+    Client->>Backend: Matchmaking request
+    Backend->>Matchmaker: Resolve match service
+    Matchmaker-->>Client: Game server endpoint
+    Client->>GameServer: Connect to match
 ```
 
-## Конфигурация
+## Configuration
 
-Главные значения backend сейчас находятся в:
+Backend configuration currently lives in:
 
 - `LawinServerV2-main/Config/config.json`
 - `LawinServerV2-main/Config/catalog_config.json`
+- `LawinServerV2-main/.env.example`
 
-Для production-like окружения лучше вынести секреты в `.env`, а в репозитории оставить только `.env.example`.
+Environment variables are preferred for values that differ per machine:
 
-## Открытые вопросы
+- `PORT`
+- `MONGODB_URI`
+- `DISCORD_BOT_TOKEN`
 
-- Какую старую версию/сезон поддерживаем первой.
-- Нужен ли отдельный account dashboard.
-- На чем делать launcher: Tauri, Electron, .NET/WPF или native C++.
-- Как хранить manifest игровых файлов.
-- Какой минимальный сценарий считать MVP: login -> select build -> launch.
+## Open Questions
+
+- Which old Fortnite version/season is the first supported target.
+- Which game server build configuration is the baseline.
+- Which backend endpoints are required for the first full client flow.
+- Which runtime files must be documented for game server operation.

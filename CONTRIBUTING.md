@@ -1,26 +1,26 @@
 # Contributing
 
-Проект находится на ранней стадии, поэтому любые изменения лучше делать маленькими и проверяемыми.
+The active scope of this repository is backend and game server only.
 
-## Рабочий процесс
+## Workflow
 
-1. Создайте отдельную ветку от `main`.
-2. Делайте изменения в одной зоне ответственности за раз.
-3. Не смешивайте backend, launcher и game server refactor в одном коммите без необходимости.
-4. Перед коммитом проверьте `git status`.
-5. Не добавляйте секреты, токены, приватные ключи, игровые файлы и личные данные.
+1. Create a branch from `main`.
+2. Keep changes focused on one area: backend, game server, or docs.
+3. Do not mix backend refactors and game server refactors in one commit unless required.
+4. Check `git status` before committing.
+5. Do not commit secrets, tokens, private keys, proprietary game files, or real user data.
 
-## Коммиты
+## Commit Messages
 
-Хорошие сообщения:
+Good examples:
 
 ```text
-Add launcher project notes
 Document backend local setup
 Fix backend config loading
+Record game server build requirements
 ```
 
-Плохие сообщения:
+Avoid vague messages:
 
 ```text
 update
@@ -28,22 +28,20 @@ fix
 stuff
 ```
 
-## Backend
-
-Для JavaScript-файлов минимум перед коммитом:
+## Backend Checks
 
 ```powershell
 cd D:\ProjectDream\LawinServerV2-main
-Get-ChildItem -Recurse -Filter *.js | ForEach-Object { node --check $_.FullName }
+npm run check
 ```
 
-## C++ game server
+## Game Server Checks
 
-Сборку проверять через Visual Studio 2022 или Developer PowerShell for VS 2022.
+Build through Visual Studio 2022 or Developer PowerShell for VS 2022.
 
-## Документация
+## Documentation
 
-Если меняете запуск, конфиги или структуру папок, обновляйте:
+If startup, config, ports, or folder structure changes, update:
 
 - `README.md`
 - `docs/SETUP_LOCAL.md`
