@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "check": "node --check index.js && node --check DiscordBot/index.js"
+    "check": "node --check index.js && node --check DiscordBot/index.js && node --check routes/launcher.js"
   },
   "repository": {
     "type": "git",
