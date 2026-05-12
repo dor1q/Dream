@@ -34,6 +34,15 @@ XMPP: XMPP and Matchmaker started listening on port 80
 BACKEND: App successfully connected to MongoDB!
 ```
 
+## Launcher Endpoints
+
+The backend exposes launcher-facing endpoints under `/launcher/api`.
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/launcher/api/status` | Returns backend, MongoDB, XMPP, and matchmaker health for the desktop launcher |
+| `POST` | `/launcher/api/auth/discord/exchange` | Validates a Discord access token and returns a short-lived exchange code for game launch |
+
 ## Game Server Build
 
 Open this solution in Visual Studio 2022:

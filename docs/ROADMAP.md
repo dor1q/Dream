@@ -19,7 +19,7 @@
 - [x] Allow backend startup without Discord bot token.
 - [x] Verify local backend startup.
 - [ ] Move more machine-specific config values to environment variables.
-- [ ] Add a small health endpoint.
+- [x] Add launcher health/status endpoint.
 - [ ] Document required auth/account creation flow.
 
 ## Stage 2. Game Server Baseline
@@ -37,6 +37,7 @@
 - [ ] Document expected startup order.
 - [ ] Document ports and firewall requirements.
 - [ ] Add local smoke-test checklist.
+- [ ] Expose game-server process/session status to launcher.
 
 ## Stage 4. Hardening
 
