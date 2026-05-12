@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -6,6 +7,9 @@ const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
 const config = JSON.parse(fs.readFileSync("./Config/config.json").toString());
 
+config.mongodb.database = process.env.MONGODB_URI || config.mongodb.database;
+config.discord.bot_token = process.env.DISCORD_BOT_TOKEN || config.discord.bot_token;
+
 const log = require("./structs/log.js");
 const error = require("./structs/error.js");
 const functions = require("./structs/functions.js");
@@ -13,7 +17,7 @@ const functions = require("./structs/functions.js");
 if (!fs.existsSync("./ClientSettings")) fs.mkdirSync("./ClientSettings");
 
 global.JWT_SECRET = functions.MakeID();
-const PORT = 8080;
+const PORT = Number(process.env.PORT || 8080);
 
 const tokens = JSON.parse(fs.readFileSync("./tokenManager/tokens.json").toString());
 
@@ -56,7 +60,11 @@ app.listen(PORT, () => {
     log.backend(`App started listening on port ${PORT}`);
 
     require("./xmpp/xmpp.js");
-    require("./DiscordBot");
+    if (config.discord.bot_token) {
+        require("./DiscordBot");
+    } else {
+        log.bot("Discord bot disabled because DISCORD_BOT_TOKEN is not set.");
+    }
 }).on("error", async (err) => {
     if (err.code == "EADDRINUSE") {
         log.error(`Port ${PORT} is already in use!\nClosing in 3 seconds...`);

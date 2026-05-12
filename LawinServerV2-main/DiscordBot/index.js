@@ -1,7 +1,9 @@
+require("dotenv").config();
 const { Client, Intents } = require("discord.js");
 const client = new Client({ intents: [ Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES ] });
 const fs = require("fs");
 const config = JSON.parse(fs.readFileSync("./Config/config.json").toString());
+config.discord.bot_token = process.env.DISCORD_BOT_TOKEN || config.discord.bot_token;
 
 const log = require("../structs/log.js");
 

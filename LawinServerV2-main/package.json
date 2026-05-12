@@ -18,7 +18,8 @@
     "xmlbuilder": "^15.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "check": "node --check index.js && node --check DiscordBot/index.js"
   },
   "repository": {
     "type": "git",
