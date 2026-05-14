@@ -18,7 +18,7 @@ Responsibilities:
 - cloud storage endpoints;
 - XMPP;
 - matchmaking endpoints;
-- launcher status and Discord exchange endpoints;
+- launcher status and backend-owned Discord OAuth endpoints;
 - configuration for matchmaker and game server addresses.
 
 The backend is a Node.js application and uses MongoDB.
@@ -71,6 +71,8 @@ Environment variables are preferred for values that differ per machine:
 - `PORT`
 - `MONGODB_URI`
 - `DISCORD_BOT_TOKEN`
+- `DISCORD_CLIENT_ID`
+- `DISCORD_CLIENT_SECRET`
 
 ## Launcher API
 
@@ -79,7 +81,9 @@ The desktop launcher uses these backend endpoints:
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `GET` | `/launcher/api/status` | Reports backend API, MongoDB, XMPP, and matchmaker health |
-| `POST` | `/launcher/api/auth/discord/exchange` | Converts a Discord OAuth access token into a short-lived exchange code |
+| `GET` | `/launcher/api/auth/discord/start` | Returns a Discord OAuth authorization URL for the desktop launcher |
+| `POST` | `/launcher/api/auth/discord/callback` | Converts a Discord OAuth code into a Dream launcher session token |
+| `POST` | `/launcher/api/auth/discord/exchange` | Converts a Dream launcher session token into a short-lived exchange code |
 
 ## Open Questions
 

@@ -74,9 +74,12 @@ Supported values:
 PORT=8080
 MONGODB_URI=mongodb://127.0.0.1/lawindb
 DISCORD_BOT_TOKEN=
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
 ```
 
 If `DISCORD_BOT_TOKEN` is empty, the backend starts without the Discord bot.
+`DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET` are required for desktop launcher login through Discord OAuth.
 
 ## Game Server
 

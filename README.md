@@ -41,7 +41,16 @@ The backend exposes launcher-facing endpoints under `/launcher/api`.
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `GET` | `/launcher/api/status` | Returns backend, MongoDB, XMPP, and matchmaker health for the desktop launcher |
-| `POST` | `/launcher/api/auth/discord/exchange` | Validates a Discord access token and returns a short-lived exchange code for game launch |
+| `GET` | `/launcher/api/auth/discord/start` | Creates a Discord OAuth login URL for the desktop launcher |
+| `POST` | `/launcher/api/auth/discord/callback` | Exchanges Discord OAuth code for a short-lived Dream launcher session |
+| `POST` | `/launcher/api/auth/discord/exchange` | Converts a Dream launcher session into a short-lived exchange code for game launch |
+
+Discord OAuth credentials are backend secrets. Put them in `LawinServerV2-main/.env`; do not store a Discord client secret in the desktop launcher.
+
+```env
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+```
 
 ## Game Server Build
 

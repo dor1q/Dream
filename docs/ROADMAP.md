@@ -20,7 +20,9 @@
 - [x] Verify local backend startup.
 - [ ] Move more machine-specific config values to environment variables.
 - [x] Add launcher health/status endpoint.
-- [ ] Document required auth/account creation flow.
+- [x] Add backend-owned Discord OAuth flow for the launcher.
+- [x] Auto-create Dream account records from Discord launcher login.
+- [x] Document required auth/account creation flow.
 
 ## Stage 2. Game Server Baseline
 

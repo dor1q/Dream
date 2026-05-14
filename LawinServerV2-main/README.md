@@ -48,6 +48,22 @@
 3) You have to get your discord id and replace discordId with it.
 4) You can set multiple moderators like this `["discordId","discordId2"]`.
 
+## Dream Launcher Discord Login
+The desktop launcher uses backend-owned Discord OAuth. Keep the Discord OAuth Client ID and Client Secret in `.env`; the launcher must not store the client secret.
+
+Required `.env` values for launcher login:
+
+```env
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+```
+
+Launcher endpoints:
+
+- `GET /launcher/api/auth/discord/start`
+- `POST /launcher/api/auth/discord/callback`
+- `POST /launcher/api/auth/discord/exchange`
+
 ## Hosting for others
 You are allowed to host for others, however please credit me and don't remove my credits from `responses/contentpages.json`.
 
