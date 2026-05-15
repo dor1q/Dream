@@ -9,14 +9,19 @@ const functions = require("../structs/functions.js");
 
 const startedAt = new Date();
 const backendPort = Number(process.env.PORT || 8080);
-const xmppPort = 80;
+const xmppPort = Number(process.env.XMPP_PORT || 80);
 const oauthStateTtlMs = 5 * 60 * 1000;
 
 global.launcherOAuthStates = global.launcherOAuthStates || new Map();
 
 app.get("/launcher/api/status", (req, res) => {
     const mongoState = getMongoState();
-    const xmppStarted = Array.isArray(global.Clients);
+    const xmppStatus = global.xmppServerStatus || {
+        state: Array.isArray(global.Clients) ? "online" : "starting",
+        details: Array.isArray(global.Clients) ? "Listening" : "XMPP server has not finished booting",
+        port: xmppPort
+    };
+    const xmppStarted = xmppStatus.state === "online";
     const connectedClients = xmppStarted ? global.Clients.length : 0;
 
     const services = [
@@ -36,24 +41,25 @@ app.get("/launcher/api/status", (req, res) => {
         {
             id: "xmpp",
             label: "XMPP",
-            state: xmppStarted ? "online" : "starting",
-            details: xmppStarted ? `${connectedClients} connected client(s)` : "XMPP server has not finished booting",
-            port: xmppPort,
+            state: xmppStatus.state,
+            details: xmppStarted ? `${connectedClients} connected client(s)` : xmppStatus.details,
+            port: xmppStatus.port,
             connectedClients
         },
         {
             id: "matchmaker",
             label: "Matchmaker",
-            state: xmppStarted ? "online" : "starting",
-            details: `WebSocket matchmaking shares port ${xmppPort}`,
-            port: xmppPort
+            state: xmppStatus.state,
+            details: xmppStarted ? `WebSocket matchmaking shares port ${xmppStatus.port}` : xmppStatus.details,
+            port: xmppStatus.port
         }
     ];
 
     const hasOfflineService = services.some(service => service.state === "offline");
+    const hasStartingService = services.some(service => service.state === "starting");
 
     res.json({
-        status: hasOfflineService ? "degraded" : "online",
+        status: hasOfflineService ? "degraded" : hasStartingService ? "starting" : "online",
         checkedAtUtc: new Date().toISOString(),
         startedAtUtc: startedAt.toISOString(),
         uptimeSeconds: Math.floor(process.uptime()),

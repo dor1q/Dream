@@ -73,6 +73,7 @@ Environment variables are preferred for values that differ per machine:
 - `DISCORD_BOT_TOKEN`
 - `DISCORD_CLIENT_ID`
 - `DISCORD_CLIENT_SECRET`
+- `JWT_SECRET`
 
 ## Launcher API
 

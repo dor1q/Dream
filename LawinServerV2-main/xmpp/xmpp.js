@@ -10,8 +10,15 @@ const functions = require("../structs/functions.js");
 const User = require("../model/user.js");
 const Friends = require("../model/friends.js");
 
-const port = 80;
-const wss = new WebSocket({ server: app.listen(port) });
+const port = Number(process.env.XMPP_PORT || 80);
+global.xmppServerStatus = {
+    state: "starting",
+    details: `Starting on port ${port}`,
+    port
+};
+
+const httpServer = app.listen(port);
+const wss = new WebSocket({ server: httpServer });
 const matchmaker = require("../matchmaker/matchmaker.js");
 
 global.xmppDomain = "prod.ol.epicgames.com";
@@ -45,7 +52,21 @@ app.get("/clients", (req, res) => {
     res.send(data);
 });
 
-wss.on('listening', () => {
+httpServer.on("error", (err) => {
+    global.xmppServerStatus = {
+        state: "offline",
+        details: err.message,
+        port
+    };
+    log.error(`XMPP and Matchmaker failed to listen on port ${port}: ${err.message}`);
+});
+
+httpServer.on('listening', () => {
+    global.xmppServerStatus = {
+        state: "online",
+        details: `Listening on port ${port}`,
+        port
+    };
     log.xmpp(`XMPP and Matchmaker started listening on port ${port}`);
 });
 

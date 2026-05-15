@@ -50,7 +50,10 @@ Discord OAuth credentials are backend secrets. Put them in `LawinServerV2-main/.
 ```env
 DISCORD_CLIENT_ID=
 DISCORD_CLIENT_SECRET=
+JWT_SECRET=
 ```
+
+`JWT_SECRET` must stay the same between backend restarts, otherwise saved launcher sessions become invalid and the user has to sign in again.
 
 ## Game Server Build
 

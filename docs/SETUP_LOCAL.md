@@ -76,10 +76,12 @@ MONGODB_URI=mongodb://127.0.0.1/lawindb
 DISCORD_BOT_TOKEN=
 DISCORD_CLIENT_ID=
 DISCORD_CLIENT_SECRET=
+JWT_SECRET=
 ```
 
 If `DISCORD_BOT_TOKEN` is empty, the backend starts without the Discord bot.
 `DISCORD_CLIENT_ID` and `DISCORD_CLIENT_SECRET` are required for desktop launcher login through Discord OAuth.
+`JWT_SECRET` must be a stable random value; changing it invalidates saved launcher sessions.
 
 ## Game Server
 

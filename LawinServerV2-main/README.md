@@ -56,7 +56,10 @@ Required `.env` values for launcher login:
 ```env
 DISCORD_CLIENT_ID=
 DISCORD_CLIENT_SECRET=
+JWT_SECRET=
 ```
+
+Keep `JWT_SECRET` stable across backend restarts so launcher sessions remain valid.
 
 Launcher endpoints:
 

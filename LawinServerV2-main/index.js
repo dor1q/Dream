@@ -16,7 +16,7 @@ const functions = require("./structs/functions.js");
 
 if (!fs.existsSync("./ClientSettings")) fs.mkdirSync("./ClientSettings");
 
-global.JWT_SECRET = functions.MakeID();
+global.JWT_SECRET = process.env.JWT_SECRET || process.env.LAUNCHER_JWT_SECRET || functions.MakeID();
 const PORT = Number(process.env.PORT || 8080);
 
 const tokens = JSON.parse(fs.readFileSync("./tokenManager/tokens.json").toString());
